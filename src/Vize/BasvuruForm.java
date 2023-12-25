@@ -48,8 +48,8 @@ public class BasvuruForm extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         
         // -- Vize Başvuru Formu --
-        // TC Kimlik Numarası
-        addFormField(panel, "TC Kimlik Numarası:", tcKimlikNoField = new JTextField(), gbc);
+        // T.C. Kimlik Numarası
+        veriEkle(panel, "T.C. Kimlik No:", tcKimlikNoField = new JTextField(), gbc);
         tcKimlikNoField.setPreferredSize(new Dimension(200, 20));
         tcKimlikNoField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -61,7 +61,7 @@ public class BasvuruForm extends JFrame {
         });
         
         // Pasaport Numarası
-        addFormField(panel, "Pasaport Numarası:", pasaportNoField = new JTextField(), gbc);
+        veriEkle(panel, "Pasaport Numarası:", pasaportNoField = new JTextField(), gbc);
         pasaportNoField.setPreferredSize(new Dimension(200, 20));
         pasaportNoField.addKeyListener(new KeyAdapter() {
         	public void keyTyped(KeyEvent e) {
@@ -72,31 +72,31 @@ public class BasvuruForm extends JFrame {
         });
 
         // Ad
-        addFormField(panel, "Ad:", adField = new JTextField(), gbc);
+        veriEkle(panel, "Ad:", adField = new JTextField(), gbc);
         adField.setPreferredSize(new Dimension(200, 20));
         adField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 if (!Character.isLetter(c)) {
-                    e.consume();  // Sayı girildiyse, bu karakteri sil
+                    e.consume();  // Sayı girildiyse, bu karakteri siler
                 }
             }
         });
         
         // Soyad
-        addFormField(panel, "Soyad:", soyadField = new JTextField(), gbc);
+        veriEkle(panel, "Soyad:", soyadField = new JTextField(), gbc);
         soyadField.setPreferredSize(new Dimension(200, 20));
         soyadField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 if (!Character.isLetter(c)) {
-                    e.consume();  // Sayı girildiyse, bu karakteri sil
+                    e.consume();  // Sayı girildiyse, bu karakteri siler
                 }
             }
         });
     
         // Doğum Tarihi
-        addFormField(panel, "Doğum Tarihi:", dogumTarihiField = new JTextField(), gbc);
+        veriEkle(panel, "Doğum Tarihi:", dogumTarihiField = new JTextField(), gbc);
         dogumTarihiField.setPreferredSize(new Dimension(200, 20));
         dogumTarihiField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -108,7 +108,7 @@ public class BasvuruForm extends JFrame {
         });
         
         // Ülke
-        addFormField(panel, "Ülke:", ulkeField = new JTextField(), gbc);
+        veriEkle(panel, "Ülke:", ulkeField = new JTextField(), gbc);
         ulkeField.setPreferredSize(new Dimension(200, 20));
         ulkeField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -120,7 +120,7 @@ public class BasvuruForm extends JFrame {
         });
 
         // Şehir
-        addFormField(panel, "Şehir:", ilField = new JTextField(), gbc);
+        veriEkle(panel, "Şehir:", ilField = new JTextField(), gbc);
         ilField.setPreferredSize(new Dimension(200, 20));
         ilField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -146,13 +146,14 @@ public class BasvuruForm extends JFrame {
         panel.add(ogrenciPanel, gbc);
         
         // Eğitim Durumu Seçimi 2
-        addFormField(panel, "Eğitim Durumu:", egitimDurumuComboBox = createEgitimDurumuComboBox(), gbc);
+        veriEkle(panel, "Eğitim Durumu:", egitimDurumuComboBox = createEgitimDurumuComboBox(), gbc);
         egitimDurumuComboBox.setPreferredSize(new Dimension(200, 20));
 
         // Çalışma Durumu Bilgileri 1      
         JPanel calismaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         calismaPanel.add(calismaEvetRadioButton = new JRadioButton("Evet"));
         calismaPanel.add(calismaHayirRadioButton = new JRadioButton("Hayır"));
+        
         ButtonGroup calismaGroup = new ButtonGroup();
         calismaGroup.add(calismaEvetRadioButton);
         calismaGroup.add(calismaHayirRadioButton);
@@ -163,13 +164,13 @@ public class BasvuruForm extends JFrame {
         panel.add(calismaPanel, gbc);
    
         // Çalışma Durumu Bilgileri 2
-        addFormField(panel, "Şirket Adı:", sirketAdiField = new JTextField(), gbc);
+        veriEkle(panel, "Şirket Adı:", sirketAdiField = new JTextField(), gbc);
         sirketAdiField.setPreferredSize(new Dimension(200, 20));
-        addFormField(panel, "Pozisyon:", pozisyonField = new JTextField(), gbc);
+        veriEkle(panel, "Pozisyon:", pozisyonField = new JTextField(), gbc);
         pozisyonField.setPreferredSize(new Dimension(200, 20));
         
         // Maaş
-        addFormField(panel, "Maaş:", maasField = new JTextField(), gbc);
+        veriEkle(panel, "Maaş:", maasField = new JTextField(), gbc);
         maasField.setPreferredSize(new Dimension(200, 20));
         maasField.addKeyListener(new KeyAdapter() {
             public void keyTyped(KeyEvent e) {
@@ -209,7 +210,7 @@ public class BasvuruForm extends JFrame {
         setVisible(true);
     }
 
-    private void addFormField(JPanel panel, String label, JComponent component, GridBagConstraints gbc) {
+    private void veriEkle(JPanel panel, String label, JComponent component, GridBagConstraints gbc) {
         gbc.gridx = 0;
         gbc.gridy++;
         panel.add(new JLabel(label), gbc);
@@ -243,7 +244,7 @@ public class BasvuruForm extends JFrame {
         Connection conn = this.connect();
 
         try {
-            String sql = "INSERT INTO users_data(tcKimlikNo, pasaportNo, ad, soyad, dogumTarihi, ulke, il, ogrenciDurumu, egitimDurumu, calismaDurumu, sirketAdi, pozisyon, maas) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        	String sql = "INSERT INTO users_data(tcKimlikNo, pasaportNo, ad, soyad, dogumTarihi, ulke, il, ogrenciDurumu, egitimDurumu, calismaDurumu, sirketAdi, pozisyon, maas, onay) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?, 'Değerlendiriliyor')";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, tcKimlikNo);
             pstmt.setString(2, pasaportNo);
@@ -282,7 +283,7 @@ public class BasvuruForm extends JFrame {
     }
     
     private void handleBasvuruButtonClick() {
-    
+        
         String tcKimlikNo = tcKimlikNoField.getText();
         String pasaportNo = pasaportNoField.getText();
         String ad = adField.getText();
@@ -291,19 +292,29 @@ public class BasvuruForm extends JFrame {
         String ulke = ulkeField.getText();
         String il = ilField.getText();
         
-    	String ogrenciDurumuText = ogrenciEvetRadioButton.isSelected() ? "Evet" : "Hayır";
-    	int ogrenciDurumu = ogrenciDurumuText.equals("Evet") ? 1 : 0;
-    	
-    	String egitimDurumu = (String) egitimDurumuComboBox.getSelectedItem();
-    	
-    	String calismaDurumText = calismaEvetRadioButton.isSelected() ? "Evet" : "Hayır";
-    	int calismaDurum = calismaDurumText.equals("Evet") ? 1 : 0;
-    	
-        String sirketAdi = sirketAdiField.getText();
-        String pozisyon = pozisyonField.getText();
-        String maas = maasField.getText();
-    
-	    // Veriler insert edilir
+        String ogrenciDurumuText = ogrenciEvetRadioButton.isSelected() ? "Evet" : "Hayır";
+        int ogrenciDurumu = ogrenciDurumuText.equals("Evet") ? 1 : 0;
+        
+        String egitimDurumu = (String) egitimDurumuComboBox.getSelectedItem();
+        
+        String calismaDurumText = calismaEvetRadioButton.isSelected() ? "Evet" : "Hayır";
+        int calismaDurum = calismaDurumText.equals("Evet") ? 1 : 0;
+        
+        String sirketAdi = "";
+        String pozisyon = "";
+        String maas = "0.0";
+
+        if (calismaDurum == 1) {
+            maas = maasField.getText();
+        }
+
+        if (calismaDurum == 1) {
+            sirketAdi = sirketAdiField.getText();
+            pozisyon = pozisyonField.getText();
+            maas = maasField.getText();
+        }
+
+        // Veriler insert edilir
         insert(tcKimlikNo, pasaportNo, ad, soyad, dogumTarihi, ulke, il, ogrenciDurumu, egitimDurumu, calismaDurum, sirketAdi, pozisyon, maas);
 
         String mesaj = "Başvurunuz değerlendirmeye alınmıştır, en geç 3 iş günü içerisinde sonucunuzu sistemden öğrenebilirsiniz.";

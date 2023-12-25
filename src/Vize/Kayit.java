@@ -12,12 +12,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Kayit extends JFrame {
+	
     public Kayit() {
         super("Kullanıcı Kaydı");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 300);
         
-         // İkon
+        // İkon
         String iconPath = "src/image/icon.png";
         setIconImage(new ImageIcon(iconPath).getImage());
 
@@ -25,10 +26,10 @@ public class Kayit extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JTextField tcField;
-        addFormField(panel, "TC Kimlik No:", tcField = new JTextField(), gbc);
-        tcField.setPreferredSize(new Dimension(200, 30));  
-        tcField.addKeyListener(new KeyAdapter() {  // Sadece rakam girilmesi sağlanır
+        JTextField tcKimlikNoField;
+        formEkle(panel, "TC Kimlik No:", tcKimlikNoField = new JTextField(), gbc);
+        tcKimlikNoField.setPreferredSize(new Dimension(200, 30));  
+        tcKimlikNoField.addKeyListener(new KeyAdapter() {  // Sadece rakam girilmesi sağlanır
             public void keyTyped(KeyEvent e) {
                 char c = e.getKeyChar();
                 if (!((c >= '0') && (c <= '9') ||
@@ -36,25 +37,25 @@ public class Kayit extends JFrame {
                      (c == KeyEvent.VK_DELETE))) {
                   e.consume();
                 }
-                if (tcField.getText().length() >= 11 ) // Maksimum 11 hane kontrolü
+                if (tcKimlikNoField.getText().length() >= 11 ) // Maksimum 11 hane kontrolü
                     e.consume(); 
             }
         });
 
-        JTextField emailField;
-        addFormField(panel, "E-posta:", emailField = new JTextField(), gbc);
-        emailField.setPreferredSize(new Dimension(200, 30)); 
+        JTextField epostaField;
+        formEkle(panel, "E-posta:", epostaField = new JTextField(), gbc);
+        epostaField.setPreferredSize(new Dimension(200, 30)); 
         
-        JPasswordField passwordField;
-        addFormField(panel, "Şifre:", passwordField = new JPasswordField(), gbc);
-        passwordField.setPreferredSize(new Dimension(200, 30)); 
+        JPasswordField sifreField;
+        formEkle(panel, "Şifre:", sifreField = new JPasswordField(), gbc);
+        sifreField.setPreferredSize(new Dimension(200, 30)); 
 
         // Kaydet Butonu
-        JButton saveButton = new JButton("Kaydet");
-        saveButton.addActionListener(e -> {
-            String tcKimlikNo = tcField.getText();
-            String eposta = emailField.getText();
-            String sifre = new String(passwordField.getPassword());
+        JButton kayitButton = new JButton("Kaydet");
+        kayitButton.addActionListener(e -> {
+            String tcKimlikNo = tcKimlikNoField.getText();
+            String eposta = epostaField.getText();
+            String sifre = new String(sifreField.getPassword());
 
             // Burada veritabanına kayıt işlemleri yapılır
             try {
@@ -83,14 +84,14 @@ public class Kayit extends JFrame {
         gbc.gridwidth = 2;  // Butonun her iki sütunuda kaplamasını sağlar
         gbc.gridy++;
         
-        panel.add(saveButton, gbc);
+        panel.add(kayitButton, gbc);
 
         add(panel, BorderLayout.CENTER);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    private void addFormField(JPanel panel, String label, JComponent component, GridBagConstraints gbc) {
+    private void formEkle(JPanel panel, String label, JComponent component, GridBagConstraints gbc) {
         gbc.gridx = 0;
         gbc.gridy++;
         panel.add(new JLabel(label), gbc);

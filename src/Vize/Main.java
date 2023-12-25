@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Main extends JFrame {
+    private static String loginTcKimlikNo;
 
     public Main() {
         super("Kullanıcı Girişi");
@@ -33,37 +34,45 @@ public class Main extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        JTextField emailField;
-        addFormField(panel, "E-posta:", emailField = new JTextField(), gbc);
-        emailField.setPreferredSize(new Dimension(200, 30));  // Boyutu ayarla
+        JTextField tcKimlikNoField;
+        addFormField(panel, "T.C. Kimlik No:", tcKimlikNoField = new JTextField(), gbc);
+        tcKimlikNoField.setPreferredSize(new Dimension(200, 30));  // Boyutu ayarla
+        tcKimlikNoField.addKeyListener(new KeyAdapter() {
+        public void keyTyped(KeyEvent e) {
+            char c = e.getKeyChar();
+            if (tcKimlikNoField.getText().length() >= 11) { // TC Kimlik numarası 11 hane kontrolü
+                e.consume();
+            }
+        }
+        });
+        //if (!Character.isDigit(c) || tcKimlikNoField.getText().length() >= 11) 
 
-        JPasswordField passwordField;
-        addFormField(panel, "Şifre:", passwordField = new JPasswordField(), gbc);
-        passwordField.setPreferredSize(new Dimension(200, 30)); 
-        
+        JPasswordField sifreField;
+        addFormField(panel, "Şifre:", sifreField = new JPasswordField(), gbc);
+        sifreField.setPreferredSize(new Dimension(200, 30));
+
         // Giriş Butonu
         JButton loginButton = new JButton("Giriş Yap");
-        loginButton.addActionListener(e -> handleLoginButtonClick(emailField.getText(), new String(passwordField.getPassword())));
+        loginButton.addActionListener(e -> handleLoginButtonClick(tcKimlikNoField.getText(), new String(sifreField.getPassword())));
         gbc.gridy++;
-        gbc.insets = new Insets(20, 120, 5, 5); 
+        gbc.insets = new Insets(20, 120, 5, 5);
         panel.add(loginButton, gbc);
+        add(panel, BorderLayout.CENTER);
 
-              add(panel, BorderLayout.CENTER);
-              setLocationRelativeTo(null);
-              setVisible(true);
-        
-        // Kaydol Butonu
+        // Kayıt Butonu
         JButton kayitButton = new JButton("Kaydol");
         kayitButton.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		new Kayit(); 
-        		setVisible(false); 
-        	}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new Kayit();
+                setVisible(false);
+            }
         });
 
         gbc.insets = new Insets(20, -120, 5, 5);
         panel.add(kayitButton, gbc);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     private void addFormField(JPanel panel, String label, JComponent component, GridBagConstraints gbc) {
@@ -75,14 +84,14 @@ public class Main extends JFrame {
         panel.add(component, gbc);
     }
 
-    private void handleLoginButtonClick(String email, String password) {
-        // Veritabanı bağlantısı
+    private void handleLoginButtonClick(String tcKimlikNo, String password) {
+    	
+        // Veri tabanı bağlantısı
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/vizedb", "root", "yed57*")) {
-
-            // SQL sorgusu 
-            String sql = "SELECT * FROM users WHERE eposta = ? AND sifre = ?";
+            // SQL sorgusu
+            String sql = "SELECT * FROM users WHERE tcKimlikNo = ? AND sifre = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, email);
+            pstmt.setString(1, tcKimlikNo);
             pstmt.setString(2, password);
 
             // Sonuçlar
@@ -90,8 +99,10 @@ public class Main extends JFrame {
 
             // Sonuç kontrolü
             if (rs.next()) {
-                new AnaSayfa();  
-                this.dispose();  
+            	loginTcKimlikNo = rs.getString("tcKimlikNo");
+                //JOptionPane.showMessageDialog(this, "Giriş başarılı!");
+                new AnaSayfa();
+                this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Hatalı kullanıcı adı veya şifre!");
             }
@@ -102,62 +113,63 @@ public class Main extends JFrame {
     }
 
     public static class AnaSayfa extends JFrame {
-        public AnaSayfa() 
-        {
+        public AnaSayfa() {
             super("Ana Sayfa");
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setSize(400, 400);
-            
+
             // İkon
             String iconPath = "src/image/icon.png";
             setIconImage(new ImageIcon(iconPath).getImage());
-            
+
             // Fotoğraf
             String imagePath = "src/image/logo.png";
             ImageIcon imageIcon = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(400, 190, Image.SCALE_DEFAULT));
             JLabel imageLabel = new JLabel(imageIcon);
             add(imageLabel, BorderLayout.NORTH);
-            
-            
+
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
             panel.add(Box.createVerticalStrut(30));
 
+            // Vize Başvurusu butonu
             JButton basvuruButon = new JButton("Vize Başvurusu");
-            basvuruButon.setAlignmentX(Component.CENTER_ALIGNMENT);  
+            basvuruButon.setAlignmentX(Component.CENTER_ALIGNMENT);
             basvuruButon.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new BasvuruForm(); 
-                    setVisible(false); 
+                    new BasvuruForm();
+                    setVisible(false);
                 }
             });
-            
-            JButton durumButon = new JButton("Başvu Durumu");
+
+            // Başvuru Durumu butonu
+            JButton durumButon = new JButton("Başvuru Durumu");
             durumButon.setAlignmentX(Component.CENTER_ALIGNMENT);
             durumButon.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new BasvuruDurum(); 
-                    setVisible(false); 
+                    new BasvuruDurum(loginTcKimlikNo); // Parametre
+                    setVisible(false);
                 }
             });
             
+            // Çıkış butonu
             JButton cikisButon = new JButton("Çıkış Yap");
             cikisButon.setAlignmentX(Component.CENTER_ALIGNMENT);
-            cikisButon.addActionListener(new ActionListener()  {
-            	@Override
-            	public void actionPerformed(ActionEvent e) {
-            	System.exit(0);
-            	}
+            cikisButon.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
             });
-            		
-            panel.add(basvuruButon);        
+
+            panel.add(basvuruButon);
             panel.add(Box.createRigidArea(new Dimension(0, 10))); // Butonlar arasında boşluk oluşturur
-            panel.add(durumButon); 
-            panel.add(Box.createRigidArea(new Dimension(0, 10))); 
-            panel.add(cikisButon); 
-            add(panel);  
+            panel.add(durumButon);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+            panel.add(cikisButon);
+            add(panel);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             setVisible(true);
