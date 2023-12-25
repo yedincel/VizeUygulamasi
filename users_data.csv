@@ -1,3 +1,3 @@
-"tcKimlikNo";"pasaportNo";"ad";"soyad";"dogumTarihi";"ulke";"il";"ogrenciDurumu";"egitimDurumu";"calismaDurumu";"sirketAdi";"pozisyon";"maas"
-"11111111111";"123456789";"Ahmet";"Demir";"2002-11-17";"Türkiye";"Ýstanbul";1;"Ilkokul";1;"XYZ Ltd.";"Mühendis";25000.0
-"22222222222";"U99111111";"Selin";"Tekin";"1995-08-07";"Türkiye";"Ankara";0;"Yuksek Lisans";1;"X Hastanesi";"Uzman Doktor";70000.0
+"tcKimlikNo";"pasaportNo";"ad";"soyad";"dogumTarihi";"ulke";"il";"ogrenciDurumu";"egitimDurumu";"calismaDurumu";"sirketAdi";"pozisyon";"maas";"onay"
+"22222222222";"U22222222";"Ece";"Demir";"1998-07-11";"Türkiye";"Ankara";0;"Yüksek Lisans";1;"Abc Holding";"Avukat";45000.0;"Deðerlendiriliyor"
+"66612778723";"U34888188";"Ayþe";"Demir";"1978-10-04";"Türkiye";"Samsun";0;"Lisans";1;"Xyz A.Þ.";"Muhasebe Uzmaný";32000.0;"Olumlu"
